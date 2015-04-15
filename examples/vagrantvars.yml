@@ -1,0 +1,7 @@
+---
+# logstash_forwarder_logstash_ip: 192.168.33.156
+logstash_forwarder_logstash_ip: "{{ hostvars['logstash']['ansible_eth0']['ipv4']['address'] }}"
+logstash_container_elasticsearch_address: "{{ logstash_forwarder_logstash_ip }}"
+kibana_dockerized_https_enabled: no
+elasticsearch_unicast_hosts:
+  - localhost.node.vagrant1.consul:9300

@@ -1,0 +1,51 @@
+- hosts: all
+  sudo: yes
+  vars_files:
+    - vagrantvars.yml
+  tasks:
+    
+    - name: collect facts
+      setup: fact_path=/tmp/vagrantfacts/
+        
+    - name: check logstash_forwarder_logstash_ip
+      debug:  var=logstash_forwarder_logstash_ip
+      tags: dev
+
+    - name: check logstash_container_elasticsearch_address
+      debug:  var=logstash_container_elasticsearch_address
+      tags: dev
+
+- hosts: logstash
+  sudo: yes
+  vars_files:
+    - vagrantvars.yml
+  roles:
+    - role: vagrant
+    - role: gitinsky-baseimage-builder
+    - role: oracle-java-8-dockerized
+    # - role: elasticsearch-dockerized
+    # - role: elasticsearch-server
+    - role: kibana-dockerized
+    - role: kibana-container
+    - role: logstash-dockerized
+    - role: logstash-container
+    - role: nginx
+  tasks:
+    - name: put kibana.reviseapp.net config
+      template: src=files/kibana.yml dest=/etc/nginx/sites-available/kibana
+
+    - name: make a site-enabled link
+      file: state=link src=/etc/nginx/sites-available/kibana dest=/etc/nginx/sites-enabled/kibana
+      notify: reload nginx
+      
+#     - name: pull elasticsearch image
+#       docker: image=
+# docker pull dockerfile/elasticsearch
+# docker run -d -p 9200:9200 -p 9300:9300 dockerfile/elasticsearch
+
+- hosts: forwarder
+  sudo: yes
+  vars_files:
+    - vagrantvars.yml
+  roles:
+    - role: logstash-forwarder-starman

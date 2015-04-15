@@ -1,0 +1,44 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV['ANSIBLE_ROLES_PATH'] = "../../../roles"
+ENV['ANSIBLE_RETRY_FILES_SAVE_PATH'] = "retry"
+Vagrant.configure(2) do |config|
+
+  config.vm.define "logstash" do |logstash_cfg|
+    logstash_cfg.vm.box='ubuntu/trusty64'
+    logstash_cfg.vm.network :forwarded_port, host: 8080, guest: 80
+    logstash_cfg.vm.network "private_network", ip: "192.168.33.44"
+    logstash_cfg.vm.provider :virtualbox do |v|
+      v.name = "logstash"
+      v.memory = 2048
+    end
+    logstash_cfg.ssh.insert_key = false
+  end
+
+  config.vm.define "forwarder" do |forwarder_cfg|
+    forwarder_cfg.vm.box='ubuntu/trusty64'
+    forwarder_cfg.vm.provider :virtualbox do |v|
+      v.name = "forwarder"
+    end
+    forwarder_cfg.ssh.insert_key = false
+        
+  end
+  
+  i = 0;
+  config.vm.provision :ansible do |ansible|
+    if i <= 0
+      ansible.playbook = "kibana.yml"
+      # ansible.verbose = "vvv"
+      ansible.sudo = true
+      # ansible.tags = ['dev']
+      ansible.extra_vars = {
+        ansible_ssh_user: 'vagrant',
+      }
+      ansible.limit = 'all'
+      i+=1;
+    end
+  end
+  
+
+end

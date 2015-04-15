@@ -1,2 +1,3 @@
 ---
 kibana_dockerized_https_enabled: yes
+ext_kibana_volume: /var/lib/docker-extvols/kibana
