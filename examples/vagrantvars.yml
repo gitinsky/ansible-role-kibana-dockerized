@@ -5,3 +5,5 @@ logstash_container_elasticsearch_address: "{{ logstash_forwarder_logstash_ip }}"
 kibana_dockerized_https_enabled: no
 elasticsearch_unicast_hosts:
   - localhost.node.vagrant1.consul:9300
+
+kibana_http_name: 192.168.33.44

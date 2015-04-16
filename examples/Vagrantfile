@@ -35,6 +35,9 @@ Vagrant.configure(2) do |config|
       ansible.extra_vars = {
         ansible_ssh_user: 'vagrant',
       }
+      ansible.groups = {
+        "consul-quorum" => ["logstash"],
+      }
       ansible.limit = 'all'
       i+=1;
     end
