@@ -7,15 +7,6 @@
     - name: collect facts
       setup: fact_path=/tmp/vagrantfacts/
         
-    - name: check logstash_forwarder_logstash_ip
-      debug:  var=logstash_forwarder_logstash_ip
-      tags: dev
-
-    - name: check logstash_container_elasticsearch_address
-      debug:  var=logstash_container_elasticsearch_address
-      tags: dev
-
-
 - hosts: logstash
   sudo: yes
   vars_files:

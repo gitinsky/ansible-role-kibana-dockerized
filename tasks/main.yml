@@ -16,9 +16,18 @@
   tags: docker
 
 - name: build a Docker image for Kibana
-  command: docker build -t gitinsky/kibana:0.1.0 --rm /root/kibana-dockerized
-  tags: docker
-
+  docker_image:
+    path:  /root/kibana-dockerized
+    name:  gitinsky/kibana
+    tag:   0.1.0
+    state: present
+  tags:
+    - docker
+  
 - name: tag it as latest
-  command: docker build -t gitinsky/kibana:latest --rm /root/kibana-dockerized
-  tags: docker
+  docker_image:
+    path:  /root/kibana-dockerized
+    name:  gitinsky/kibana
+    state: present
+  tags:
+    - docker

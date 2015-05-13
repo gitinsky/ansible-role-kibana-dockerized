@@ -9,6 +9,7 @@ Vagrant.configure(2) do |config|
     logstash_cfg.vm.box='ubuntu/trusty64'
     logstash_cfg.vm.network :forwarded_port, host: 8080, guest: 80
     logstash_cfg.vm.network "private_network", ip: "192.168.33.44"
+    logstash_cfg.vm.hostname = "logstash"
     logstash_cfg.vm.provider :virtualbox do |v|
       v.name = "logstash"
       v.memory = 2048
@@ -18,6 +19,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "forwarder" do |forwarder_cfg|
     forwarder_cfg.vm.box='ubuntu/trusty64'
+    forwarder_cfg.vm.hostname = "forwarder"
     forwarder_cfg.vm.provider :virtualbox do |v|
       v.name = "forwarder"
     end
@@ -29,9 +31,9 @@ Vagrant.configure(2) do |config|
   config.vm.provision :ansible do |ansible|
     if i <= 0
       ansible.playbook = "kibana.yml"
-      # ansible.verbose = "vvv"
+      ansible.verbose = "vv"
       ansible.sudo = true
-      # ansible.tags = ['dev']
+      ansible.tags = ['logstash']
       ansible.extra_vars = {
         ansible_ssh_user: 'vagrant',
       }
