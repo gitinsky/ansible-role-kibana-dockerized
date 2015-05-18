@@ -1,33 +1,43 @@
 ---
 - name: make a build dir
   file: state=directory name=/root/kibana-dockerized
-  tags: docker
+  tags: 
+    - docker
+    - kibana
 
 - name: put Dockerfile
   template: src=Dockerfile dest=/root/kibana-dockerized/Dockerfile
-  tags: docker
+  tags: 
+    - docker
+    - kibana
 
 - name: put config.js
   template: src=config.js dest=/root/kibana-dockerized/config.js
-  tags: docker
+  tags:
+    - docker
+    - kibana
 
 - name: put default
   template: src=default dest=/root/kibana-dockerized/default
-  tags: docker
+  tags: 
+    - docker
+    - kibana
 
 - name: build a Docker image for Kibana
   docker_image:
     path:  /root/kibana-dockerized
     name:  gitinsky/kibana
     tag:   0.1.0
-    state: present
+    state: build
   tags:
     - docker
+    - kibana
   
 - name: tag it as latest
   docker_image:
     path:  /root/kibana-dockerized
     name:  gitinsky/kibana
-    state: present
+    state: build
   tags:
     - docker
+    - kibana

@@ -10,6 +10,7 @@ RUN \
   grunt release --force
 
 #COPY config.js /kibana/config.js
+RUN rm -v /kibana/src/config.js
 
 ADD ./default /etc/nginx/sites-available/default
 
