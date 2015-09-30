@@ -1,3 +1,5 @@
 ---
 kibana_dockerized_https_enabled: yes
 ext_kibana_volume: /var/lib/docker-extvols/kibana
+# kibana_version: 3.1.2
+kibana_version: 4.1.2

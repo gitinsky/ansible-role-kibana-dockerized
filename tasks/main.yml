@@ -11,23 +11,11 @@
     - docker
     - kibana
 
-- name: put config.js
-  template: src=config.js dest=/root/kibana-dockerized/config.js
-  tags:
-    - docker
-    - kibana
-
-- name: put default
-  template: src=default dest=/root/kibana-dockerized/default
-  tags: 
-    - docker
-    - kibana
-
 - name: build a Docker image for Kibana
   docker_image:
     path:  /root/kibana-dockerized
     name:  gitinsky/kibana
-    tag:   0.1.0
+    tag:   "{{ kibana_version }}.0"
     state: build
   tags:
     - docker

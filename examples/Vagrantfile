@@ -33,12 +33,12 @@ Vagrant.configure(2) do |config|
       ansible.playbook = "kibana.yml"
       ansible.verbose = "vv"
       ansible.sudo = true
-      ansible.tags = ['logstash']
+      # ansible.tags = ['logstash']
       ansible.extra_vars = {
         ansible_ssh_user: 'vagrant',
       }
       ansible.groups = {
-        "consul-quorum" => ["logstash"],
+        "es-hosts" => ["logstash"],
       }
       ansible.limit = 'all'
       i+=1;

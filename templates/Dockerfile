@@ -2,16 +2,15 @@ FROM gitinsky/baseimage:0.1.4
 MAINTAINER Git In Sky <support@gitinsky.com>
 
 RUN \
-  apt-add-repository ppa:chris-lea/node.js && apt-get update && \
-  apt-get -y install nodejs git nginx && \
+export DEBIAN_FRONTEND=noninteractive && \
+  apt-get update && \
+  apt-get install -y aria2 && \
   cd / && \
-  git clone https://github.com/elasticsearch/kibana.git /kibana && \
-  cd /kibana && git checkout v3.1.2 && npm install && npm install -g grunt-cli && grunt && grunt build && \
-  grunt release --force
+  mkdir -v /kibana && \
+  aria2c -j 10 -c https://download.elastic.co/kibana/kibana/kibana-{{ kibana_version }}-linux-x{{ '64' if ansible_architecture == 'x86_64' else '86' }}.tar.gz && \
+  tar -xvf kibana-{{ kibana_version }}-linux-x{{ '64' if ansible_architecture == 'x86_64' else '86' }}.tar.gz -C /kibana --strip-components=1 && \
+  mv -v /kibana/config/kibana.yml /kibana/config/kibana.yml.orig && \
+  apt-get purge -y aria2 && apt-get autoremove -y && \
+  rm -rvf /var/lib/apt/lists/*
 
-#COPY config.js /kibana/config.js
-RUN rm -v /kibana/src/config.js
-
-ADD ./default /etc/nginx/sites-available/default
-
-EXPOSE 80
+EXPOSE 5601
