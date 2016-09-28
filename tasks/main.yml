@@ -12,20 +12,7 @@
     - kibana
 
 - name: build a Docker image for Kibana
-  docker_image:
-    path:  /root/kibana-dockerized
-    name:  gitinsky/kibana
-    tag:   "{{ kibana_version }}.0"
-    state: build
-  tags:
-    - docker
-    - kibana
-  
-- name: tag it as latest
-  docker_image:
-    path:  /root/kibana-dockerized
-    name:  gitinsky/kibana
-    state: build
+  command: docker build --no-cache -t gitinsky/kibana:{{ kibana_version }}.0 -t gitinsky/kibana:latest --rm /root/kibana-dockerized
   tags:
     - docker
     - kibana
