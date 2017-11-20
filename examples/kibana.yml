@@ -1,5 +1,5 @@
 - hosts: all
-  sudo: yes
+  become: yes
   vars_files:
     - vagrantvars.yml
   tasks:
@@ -8,7 +8,7 @@
       setup: fact_path=/tmp/vagrantfacts/
         
 - hosts: logstash
-  sudo: yes
+  become: yes
   vars_files:
     - vagrantvars.yml
   roles:
@@ -17,7 +17,7 @@
 
 
 - hosts: logstash
-  sudo: yes
+  become: yes
   vars_files:
     - vagrantvars.yml
   roles:
@@ -47,7 +47,7 @@
 - hosts:
   - forwarder
   - logstash
-  sudo: yes
+  become: yes
   vars_files:
     - vagrantvars.yml
   roles:
